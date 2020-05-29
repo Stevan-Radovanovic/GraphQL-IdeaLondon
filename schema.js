@@ -10,7 +10,7 @@ module.exports = buildSchema(`
 
   input ProductInputData {
       title: String!
-      price: String!
+      price: Float!
   }
 
   input ProductUpdateData {

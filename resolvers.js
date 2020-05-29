@@ -1,11 +1,22 @@
 // @ts-nocheck
+const Product = require("./product.model");
+
 module.exports = {
     startingQuery() {
         return 'Welcome to GraphQL Idea London'
     },
 
-    createProduct(args) {
+    async createProduct(args) {
+       const product = new Product({
+           title: args.input.title,
+           price: args.input.price
+       });
+       try {
+        await product.save();
         return 'Created ' + args.input.title + ' that costs ' + args.input.price
+       } catch {
+        return 'Product not created succesfully'
+       }
     },
 
     deleteProduct(args) {
