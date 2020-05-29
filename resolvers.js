@@ -19,19 +19,47 @@ module.exports = {
        }
     },
 
-    deleteProduct(args) {
-        return 'Successfuly deleted a product'
+    async deleteProductById({_id}) {
+        try {
+        await Product.findByIdAndDelete(_id);
+        return 'Deleted a product with the following id: ' + _id;
+        } catch (err) {
+            console.log(err.message)
+            return 'Product not deleted correctly'
+        }
     },
 
-    updateProduct(args) {
-        return 'Successfuly updated a product'
+   async updateProduct(args) {
+        try {
+            if(args.input.title===undefined && args.input.price===undefined) {
+                return;
+            }
+
+            if(args.input.price===undefined) {
+                await Product.findByIdAndUpdate(args.input._id, {$set:{title: args.input.title}});
+                return 'Succesfully updated a product name to ' + args.input.title;
+            }
+            
+            if(args.input.title===undefined) {
+                await Product.findByIdAndUpdate(args.input._id, {$set:{price: args.input.price}});
+                return 'Succesfully updated a product price'
+            }
+
+            await Product.findByIdAndUpdate(args.input._id, {title: args.input.title, price: args.input.price});
+            return 'Succesfully updated a product'
+
+            } catch (err) {
+                console.log(err.message)
+                return 'Product not updated correctly'
+            }
     },
 
-    returnAllProducts() {
-        return [{
-            _id: 1, title: 'P1', price: 22
-        },{
-            _id: 2, title: 'P2', price: 21
-        }]
+    async returnAllProducts() {
+        try {
+        const response = await Product.find();
+        return response;
+        } catch {
+            return 'Products not fetched correctly'
+        }
     }
 }
