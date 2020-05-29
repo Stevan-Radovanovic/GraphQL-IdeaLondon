@@ -5,7 +5,7 @@ module.exports = buildSchema(`
   type Product {
       _id: ID!
       title: String!
-      price: String!
+      price: Float!
   }
 
   input ProductInputData {
@@ -13,12 +13,20 @@ module.exports = buildSchema(`
       price: String!
   }
 
+  input ProductUpdateData {
+    title: String
+    price: String
+  }
+
   type RootQuery {
-    hello: String   
+    startingQuery: String   
+    returnAllProducts: [Product]
   }
 
   type RootMutation {
     createProduct(input: ProductInputData): String
+    deleteProduct(_id: String): String
+    updateProduct(input: ProductUpdateData): String
   }
 
   schema {
